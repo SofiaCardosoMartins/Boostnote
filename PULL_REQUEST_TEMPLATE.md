@@ -1,8 +1,3 @@
-<!--
-Before submitting this PR, please make sure that:
-- You have read and understand the contributing.md
-- You have checked docs/code_style.md for information on code style
--->
 ## Description
 Boostnote previously showed the hour or a short date like `2d` or `21h` in the note view, *i. e.,*
 the time lapse between the current time and the creation/last editing timestamp. An user made a feature request so that this timestamp could be displayed in the note view instead of the time lapse, and that's precisely the new implemented functionality.
