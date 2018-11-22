@@ -22,6 +22,7 @@ import Markdown from '../../lib/markdown'
 import i18n from 'browser/lib/i18n'
 import { confirmDeleteNote } from 'browser/lib/confirmDeleteNote'
 import context from 'browser/lib/context'
+import { formatDate } from 'browser/lib/date-formatter'
 
 const { remote } = require('electron')
 const { dialog } = remote
@@ -1022,10 +1023,16 @@ class NoteList extends React.Component {
           selectedNoteKeys.includes(uniqueKey) ||
           notes.length === 1 ||
           (autoSelectFirst && index === 0)
-        const dateDisplay = moment(
+        let dateDisplay;
+        if (this.props.config.ui.showDate)
+          dateDisplay = formatDate(note.updatedAt);
+        else
+        {
+          dateDisplay = moment(
           sortBy === 'CREATED_AT'
             ? note.createdAt : note.updatedAt
         ).fromNow('D')
+        }
 
         if (isDefault) {
           return (

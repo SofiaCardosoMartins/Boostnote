@@ -70,6 +70,7 @@ class UiTab extends React.Component {
         defaultNote: this.refs.defaultNote.value,
         showCopyNotification: this.refs.showCopyNotification.checked,
         confirmDeletion: this.refs.confirmDeletion.checked,
+        showDate: this.refs.showDate.checked,
         showOnlyRelatedTags: this.refs.showOnlyRelatedTags.checked,
         showTagsAlphabetically: this.refs.showTagsAlphabetically.checked,
         saveTagsAlphabetically: this.refs.saveTagsAlphabetically.checked,
@@ -250,6 +251,16 @@ class UiTab extends React.Component {
                 type='checkbox'
               />&nbsp;
               {i18n.__('Show a confirmation dialog when deleting notes')}
+            </label>
+          </div>
+          <div styleName='group-checkBoxSection'>
+            <label>
+              <input onChange={(e) => this.handleUIChange(e)}
+                checked={this.state.config.ui.showDate}
+                ref='showDate'
+                type='checkbox'
+              />&nbsp;
+              {i18n.__('Show date information about a note in side panel')}
             </label>
           </div>
           {

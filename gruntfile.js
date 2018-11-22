@@ -11,7 +11,7 @@ module.exports = function (grunt) {
     authCode = grunt.file.readJSON('secret/auth_code.json')
   } catch (e) {
     if (e.origError.code === 'ENOENT') {
-      console.warn('secret/auth_code.json is not found. CodeSigning is not available.')
+      console.warn('secret/auth_.json is not found. CodeSigning is not available.')
     }
   }
   const OSX_COMMON_NAME = authCode != null ? authCode.OSX_COMMON_NAME : ''
