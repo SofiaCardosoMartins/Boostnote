@@ -1023,16 +1023,14 @@ class NoteList extends React.Component {
           selectedNoteKeys.includes(uniqueKey) ||
           notes.length === 1 ||
           (autoSelectFirst && index === 0)
-        let dateDisplay;
-        if (this.props.config.ui.showDate)
-          dateDisplay = formatDate(note.updatedAt);
-        else
-        {
+        let dateDisplay
+        if (this.props.config.ui.showDate) {
+          dateDisplay = formatDate(note.updatedAt) }
+        else {
           dateDisplay = moment(
           sortBy === 'CREATED_AT'
             ? note.createdAt : note.updatedAt
-        ).fromNow('D')
-        }
+        ).fromNow('D') }
 
         if (isDefault) {
           return (
