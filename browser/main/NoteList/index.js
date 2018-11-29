@@ -1025,12 +1025,13 @@ class NoteList extends React.Component {
           (autoSelectFirst && index === 0)
         let dateDisplay
         if (this.props.config.ui.showDate) {
-          dateDisplay = formatDate(note.updatedAt) }
-        else {
+          dateDisplay = formatDate(note.updatedAt) 
+        } else {
           dateDisplay = moment(
           sortBy === 'CREATED_AT'
             ? note.createdAt : note.updatedAt
-        ).fromNow('D') }
+        ).fromNow('D') 
+        }
 
         if (isDefault) {
           return (
