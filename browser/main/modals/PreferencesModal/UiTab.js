@@ -260,7 +260,7 @@ class UiTab extends React.Component {
                 ref='showDate'
                 type='checkbox'
               />&nbsp;
-              {i18n.__('Show date information about a note in side panel')}
+              {i18n.__('Show full date information in note list')}
             </label>
           </div>
           {
