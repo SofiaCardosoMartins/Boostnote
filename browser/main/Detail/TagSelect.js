@@ -7,6 +7,7 @@ import AwsMobileAnalyticsConfig from 'browser/main/lib/AwsMobileAnalyticsConfig'
 import i18n from 'browser/lib/i18n'
 import ee from 'browser/main/lib/eventEmitter'
 import Autosuggest from 'react-autosuggest'
+import context from 'browser/lib/context'
 
 class TagSelect extends React.Component {
   constructor (props) {
@@ -91,6 +92,29 @@ class TagSelect extends React.Component {
   handleTagLabelClick (tag) {
     const { router } = this.context
     router.push(`/tags/${tag}`)
+  }
+
+  handleTagLabelRightClick (e, tag) {
+    const path = require('path')
+    console.log(path.join(__dirname, 'browser'))
+
+    context.popup([
+      {
+        icon: 'resources/colors/blue.png'
+      },
+      {
+        icon: 'resources/colors/green.png'
+      },
+      {
+        icon: 'resources/colors/pink.png'
+      },
+      {
+        icon: 'resources/colors/purple.png'
+      },
+      {
+        icon: 'resources/colors/red.png'
+      }
+    ])
   }
 
   handleTagRemoveButtonClick (tag) {
@@ -187,7 +211,7 @@ class TagSelect extends React.Component {
           <span styleName='tag'
             key={tag}
           >
-            <span styleName='tag-label' onClick={(e) => this.handleTagLabelClick(tag)}>#{tag}</span>
+            <span styleName='tag-label' onClick={(e) => this.handleTagLabelClick(tag)} onContextMenu={(e) => this.handleTagLabelRightClick(e, tag)}>#{tag}</span>
             <button styleName='tag-removeButton'
               onClick={(e) => this.handleTagRemoveButtonClick(tag)}
             >
