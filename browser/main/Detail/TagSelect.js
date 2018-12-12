@@ -15,7 +15,10 @@ class TagSelect extends React.Component {
 
     this.state = {
       newTag: '',
-      suggestions: []
+      suggestions: [],
+      tag: {
+        color: props.color
+      }
     }
 
     this.handleAddTag = this.handleAddTag.bind(this)
@@ -94,13 +97,19 @@ class TagSelect extends React.Component {
     router.push(`/tags/${tag}`)
   }
 
-  handleSwitchTagColor (label, tag, color) {
-    label.style['color'] = color
+  handleSwitchTagColor (label, tag2, color) {
+    const tag = Object.assign({}, this.state.tag, { color: color })
+    this.setState({ tag })
+    this.props.color = color
+    this.props.onChange()
+    console.log(this.props)
+
+    // label.style['color'] = color
    /* this.props.color = color
-    this.props.onChange()*/
+    this.props.onChange() */
 /*
     const tag2 = Object.assign({}, this.props, { color: color.hex })
-    this.setState({ tag2 })*/
+    this.setState({ tag2 }) */
   }
 
   handleTagLabelRightClick (e, tag) {
@@ -215,7 +224,8 @@ class TagSelect extends React.Component {
   }
 
   render () {
-    const { value, className, color, showTagsAlphabetically } = this.props
+    const { value, className, showTagsAlphabetically } = this.props
+    console.log(this.props)
 
     const tagList = _.isArray(value)
       ? (showTagsAlphabetically ? _.sortBy(value) : value).map((tag) => {
@@ -223,7 +233,7 @@ class TagSelect extends React.Component {
           <span styleName='tag'
             key={tag}
           >
-            <span style={{color: color}} styleName='tag-label' onClick={(e) => this.handleTagLabelClick(tag)} onContextMenu={(e) => this.handleTagLabelRightClick(e, tag)}>#{tag}</span>
+            <span style={{color: this.state.tag.color}} styleName='tag-label' onClick={(e) => this.handleTagLabelClick(tag)} onContextMenu={(e) => this.handleTagLabelRightClick(e, tag)}>#{tag}</span>
             <button styleName='tag-removeButton'
               onClick={(e) => this.handleTagRemoveButtonClick(tag)}
             >
@@ -277,7 +287,7 @@ TagSelect.propTypes = {
   className: PropTypes.string,
   value: PropTypes.arrayOf(PropTypes.string),
   onChange: PropTypes.func,
-  color: PropTypes.string
+  color: PropTypes.string,
 }
 
 export default CSSModules(TagSelect, styles)
