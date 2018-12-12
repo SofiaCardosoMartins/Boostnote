@@ -94,25 +94,37 @@ class TagSelect extends React.Component {
     router.push(`/tags/${tag}`)
   }
 
-  handleTagLabelRightClick (e, tag) {
-    const path = require('path')
-    console.log(path.join(__dirname, 'browser'))
+  handleSwitchTagColor (label, tag, color) {
+    label.style['color'] = color
+   /* this.props.color = color
+    this.props.onChange()*/
+/*
+    const tag2 = Object.assign({}, this.props, { color: color.hex })
+    this.setState({ tag2 })*/
+  }
 
+  handleTagLabelRightClick (e, tag) {
+    let label = e.target
     context.popup([
       {
-        icon: 'resources/colors/blue.png'
+        icon: 'resources/colors/blue.png',
+        click: (e) => this.handleSwitchTagColor(label, tag, 'blue')
       },
       {
-        icon: 'resources/colors/green.png'
+        icon: 'resources/colors/green.png',
+        click: (e) => this.handleSwitchTagColor(label, tag, 'green')
       },
       {
-        icon: 'resources/colors/pink.png'
+        icon: 'resources/colors/pink.png',
+        click: (e) => this.handleSwitchTagColor(label, tag, 'pink')
       },
       {
-        icon: 'resources/colors/purple.png'
+        icon: 'resources/colors/purple.png',
+        click: (e) => this.handleSwitchTagColor(label, tag, 'purple')
       },
       {
-        icon: 'resources/colors/red.png'
+        icon: 'resources/colors/red.png',
+        click: (e) => this.handleSwitchTagColor(label, tag, 'red')
       }
     ])
   }
@@ -203,7 +215,7 @@ class TagSelect extends React.Component {
   }
 
   render () {
-    const { value, className, showTagsAlphabetically } = this.props
+    const { value, className, color, showTagsAlphabetically } = this.props
 
     const tagList = _.isArray(value)
       ? (showTagsAlphabetically ? _.sortBy(value) : value).map((tag) => {
@@ -211,7 +223,7 @@ class TagSelect extends React.Component {
           <span styleName='tag'
             key={tag}
           >
-            <span styleName='tag-label' onClick={(e) => this.handleTagLabelClick(tag)} onContextMenu={(e) => this.handleTagLabelRightClick(e, tag)}>#{tag}</span>
+            <span style={{color: color}} styleName='tag-label' onClick={(e) => this.handleTagLabelClick(tag)} onContextMenu={(e) => this.handleTagLabelRightClick(e, tag)}>#{tag}</span>
             <button styleName='tag-removeButton'
               onClick={(e) => this.handleTagRemoveButtonClick(tag)}
             >
@@ -264,7 +276,8 @@ TagSelect.contextTypes = {
 TagSelect.propTypes = {
   className: PropTypes.string,
   value: PropTypes.arrayOf(PropTypes.string),
-  onChange: PropTypes.func
+  onChange: PropTypes.func,
+  color: PropTypes.string
 }
 
 export default CSSModules(TagSelect, styles)
