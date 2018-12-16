@@ -231,9 +231,13 @@ class SideNav extends React.Component {
     }
     return (
       tagList.map(tag => {
+        let colors = ['black ', 'blue  ', 'green ', 'pink  ', 'purple', 'red   ']
+        let tagName = tag.name
+        if(colors.includes(tag.name.slice(-6)))
+          tagName = tag.name.slice(0,-6)
         return (
           <TagListItem
-            name={tag.name}
+            name={tagName}
             handleClickTagListItem={this.handleClickTagListItem.bind(this)}
             handleClickNarrowToTag={this.handleClickNarrowToTag.bind(this)}
             handleContextMenu={this.handleTagContextMenu.bind(this)}

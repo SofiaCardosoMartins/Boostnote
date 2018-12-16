@@ -102,6 +102,7 @@ class TagSelect extends React.Component {
   }
 
   handleTagLabelClick (tag) {
+    console.log('click: ' + tag)
     const { router } = this.context
     router.push(`/tags/${tag}`)
   }
@@ -259,7 +260,6 @@ class TagSelect extends React.Component {
       : []
 
     const { newTag, suggestions } = this.state
-    console.log(suggestions)
     let suggestionsWithoutColor = []
     for (let i = 0; i < suggestions.length; i++) {
       let suggestion = suggestions[i]
