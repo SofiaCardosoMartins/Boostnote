@@ -86,7 +86,6 @@ class TagSelect extends React.Component {
     this.value = this.props.value
 
     this.buildSuggestions()
-
     ee.on('editor:add-tag', this.handleAddTag)
   }
 
@@ -260,6 +259,16 @@ class TagSelect extends React.Component {
       : []
 
     const { newTag, suggestions } = this.state
+    console.log(suggestions)
+    let suggestionsWithoutColor = []
+    for (let i = 0; i < suggestions.length; i++) {
+      let suggestion = suggestions[i]
+      suggestionsWithoutColor.push(suggestion)
+      let color = suggestion.name.slice(-6)
+      if (colors.includes(color)) {
+        suggestionsWithoutColor[i].name = suggestion.name.slice(0, -6)
+      }
+    }
 
     return (
       <div className={_.isString(className)
@@ -271,7 +280,7 @@ class TagSelect extends React.Component {
         {tagList}
         <Autosuggest
           ref='newTag'
-          suggestions={suggestions}
+          suggestions={suggestionsWithoutColor}
           onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
           onSuggestionsClearRequested={this.onSuggestionsClearRequested}
           onSuggestionSelected={this.onSuggestionSelected}
