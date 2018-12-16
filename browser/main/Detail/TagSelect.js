@@ -20,7 +20,7 @@ class TagSelect extends React.Component {
         color: props.color
       }
     }
-
+    this.colors = ['black ', 'blue  ', 'green ', 'pink  ', 'purple', 'red   ']
     this.handleAddTag = this.handleAddTag.bind(this)
     this.onInputBlur = this.onInputBlur.bind(this)
     this.onInputChange = this.onInputChange.bind(this)
@@ -30,13 +30,15 @@ class TagSelect extends React.Component {
     this.onSuggestionSelected = this.onSuggestionSelected.bind(this)
   }
 
-  addNewTag (newTag) {
+  addNewTag (newTag, color = 'black ') {
     AwsMobileAnalyticsConfig.recordDynamicCustomEvent('ADD_TAG')
 
     newTag = newTag.trim().replace(/ +/g, '_')
     if (newTag.charAt(0) === '#') {
       newTag.substring(1)
     }
+
+    newTag += color
 
     if (newTag.length <= 0) {
       this.setState({
@@ -58,6 +60,14 @@ class TagSelect extends React.Component {
       this.value = value
       this.props.onChange()
     })
+  }
+
+  updateTag (previousTag, newTag, color) {
+    console.log(this.props.value)
+    this.handleTagRemoveButtonClick(previousTag)
+    console.log(this.props.value)
+    this.addNewTag(newTag, color)
+    console.log(this.props.value)
   }
 
   buildSuggestions () {
@@ -97,19 +107,18 @@ class TagSelect extends React.Component {
     router.push(`/tags/${tag}`)
   }
 
-  handleSwitchTagColor (label, tag2, color) {
+  handleSwitchTagColor (label, tagValue, color) {
     const tag = Object.assign({}, this.state.tag, { color: color })
     this.setState({ tag })
     this.props.color = color
     this.props.onChange()
-    console.log(this.props)
 
-    // label.style['color'] = color
-   /* this.props.color = color
-    this.props.onChange() */
-/*
-    const tag2 = Object.assign({}, this.props, { color: color.hex })
-    this.setState({ tag2 }) */
+    let tagColor = tagValue.slice(-6)
+    if (!this.colors.includes(tagColor)) {
+      tagValue += 'black '
+    }
+    let newTag = tagValue.slice(0, -6)
+    this.updateTag(tagValue, newTag, color)
   }
 
   handleTagLabelRightClick (e, tag) {
@@ -117,15 +126,15 @@ class TagSelect extends React.Component {
     context.popup([
       {
         icon: 'resources/colors/blue.png',
-        click: (e) => this.handleSwitchTagColor(label, tag, 'blue')
+        click: (e) => this.handleSwitchTagColor(label, tag, 'blue  ')
       },
       {
         icon: 'resources/colors/green.png',
-        click: (e) => this.handleSwitchTagColor(label, tag, 'green')
+        click: (e) => this.handleSwitchTagColor(label, tag, 'green ')
       },
       {
         icon: 'resources/colors/pink.png',
-        click: (e) => this.handleSwitchTagColor(label, tag, 'pink')
+        click: (e) => this.handleSwitchTagColor(label, tag, 'pink  ')
       },
       {
         icon: 'resources/colors/purple.png',
@@ -133,7 +142,7 @@ class TagSelect extends React.Component {
       },
       {
         icon: 'resources/colors/red.png',
-        click: (e) => this.handleSwitchTagColor(label, tag, 'red')
+        click: (e) => this.handleSwitchTagColor(label, tag, 'red   ')
       }
     ])
   }
@@ -224,16 +233,22 @@ class TagSelect extends React.Component {
   }
 
   render () {
-    const { value, className, showTagsAlphabetically } = this.props
-    console.log(this.props)
+    const {value, className, showTagsAlphabetically } = this.props
+    const colors = this.colors
 
     const tagList = _.isArray(value)
       ? (showTagsAlphabetically ? _.sortBy(value) : value).map((tag) => {
+        let tagName = tag.slice(0, -6)
+        let color = tag.slice(-6)
+        if (!colors.includes(color)) {
+          color = 'black'
+          tagName = tag
+        }
         return (
           <span styleName='tag'
             key={tag}
           >
-            <span style={{color: this.state.tag.color}} styleName='tag-label' onClick={(e) => this.handleTagLabelClick(tag)} onContextMenu={(e) => this.handleTagLabelRightClick(e, tag)}>#{tag}</span>
+            <span style={{color: color}} styleName='tag-label' onClick={(e) => this.handleTagLabelClick(tag)} onContextMenu={(e) => this.handleTagLabelRightClick(e, tag)}>#{tagName}</span>
             <button styleName='tag-removeButton'
               onClick={(e) => this.handleTagRemoveButtonClick(tag)}
             >
@@ -287,7 +302,7 @@ TagSelect.propTypes = {
   className: PropTypes.string,
   value: PropTypes.arrayOf(PropTypes.string),
   onChange: PropTypes.func,
-  color: PropTypes.string,
+  color: PropTypes.string
 }
 
 export default CSSModules(TagSelect, styles)
